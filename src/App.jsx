@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
 import "./styles.css";
 import { NewTodoForm } from "./NewTodoForm";
-import { TodoList } from "./TodoList";
+import TodoList from "./TodoList";
+import { ModalEdit } from "./ModalEdit";
 export default function App() {
   const [todos, setTodos] = useState(() => {
     const localValue = localStorage.getItem("ITEMS");
-    if (localValue == null) return [];
+    if (localValue === null) return [];
 
     return JSON.parse(localValue);
   });
+
+  const [showModal, setShowModal] = useState(false);
+  const [currentEdit, setCurrentEdit] = useState({});
 
   useEffect(() => {
     console.log(todos);
@@ -44,6 +48,36 @@ export default function App() {
     });
   };
 
+  const showPopup = () => {
+    setShowModal(true);
+  };
+  const hidePopup = () => {
+    setShowModal(false);
+  };
+
+  const handleEditTodo = (id) => {
+    showPopup();
+    setCurrentEdit(
+      todos.find((todo) => {
+        return todo.id === id;
+      })
+    );
+  };
+
+  const handleEdit = (title) => {
+    setTodos((prevTodos) => {
+      return prevTodos.map((todo) => {
+        if (todo.id === currentEdit.id) {
+          return {
+            ...todo,
+            title,
+          };
+        } else {
+          return todo;
+        }
+      });
+    });
+  };
   return (
     <>
       <NewTodoForm addTodo={addTodo} />
@@ -52,7 +86,9 @@ export default function App() {
         todos={todos}
         toggleTodo={toggleTodo}
         deleteTodo={deleteTodos}
+        handleEditTodo={handleEditTodo}
       />
+      {showModal && <ModalEdit hidePopup={hidePopup} handleEdit={handleEdit} />}
     </>
   );
 }
