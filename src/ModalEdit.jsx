@@ -1,10 +1,14 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 
-export const ModalEdit = ({ hidePopup, handleEdit }) => {
-  const [newTitle, setNewTitle] = useState("");
+export const ModalEdit = ({ hidePopup, handleEdit, defaultTitle }) => {
+  const [newTitle, setNewTitle] = useState(defaultTitle || "");
 
   const handleAdd = () => {
+    if (!newTitle.trim()) {
+      hidePopup();
+      return;
+    }
     handleEdit(newTitle);
     hidePopup();
   };
@@ -28,5 +32,6 @@ export const ModalEdit = ({ hidePopup, handleEdit }) => {
 
 ModalEdit.propTypes = {
   hidePopup: PropTypes.func.isRequired,
-  handleEdit: PropTypes.func,
+  handleEdit: PropTypes.func.isRequired,
+  defaultTitle: PropTypes.string.isRequired,
 };

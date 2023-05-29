@@ -67,7 +67,8 @@ body {
   cursor: auto;
 }
 
-.new-item-form input {
+.new-item-form input,
+.todo-main span input {
   outline: none;
   border: 1px solid hsl(200, 100%, 40%);
   background: hsl(200, 100%, 30%);
@@ -79,11 +80,20 @@ body {
 .new-item-form input:focus {
   border: 1px solid hsl(200, 100%, 70%);
 }
+.todo-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
 
 .header {
   font-size: 1.5rem;
-  margin-top: 1.5rem;
-  margin-bottom: 0.5rem;
+}
+
+.todo-main span {
+  display: flex;
+  gap: 0.2rem;
 }
 
 .list {

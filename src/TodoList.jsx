@@ -1,11 +1,18 @@
 import { TodoItem } from "./TodoItem";
 import PropTypes from "prop-types";
 
-const TodoList = ({ todos, toggleTodo, deleteTodo, handleEditTodo }) => {
+const TodoList = ({
+  todos,
+  toggleTodo,
+  deleteTodo,
+  handleEditTodo,
+  showFilterData,
+  filterData,
+}) => {
   return (
     <ul className="list">
       {todos.length === 0 && "No Todos"}
-      {todos.map((todo) => {
+      {(showFilterData ? filterData : todos).map((todo) => {
         return (
           <TodoItem
             id={todo.id}
@@ -31,6 +38,12 @@ TodoList.propTypes = {
   toggleTodo: PropTypes.func.isRequired,
   deleteTodo: PropTypes.func.isRequired,
   handleEditTodo: PropTypes.func.isRequired,
+  showFilterData: PropTypes.bool.isRequired,
+  filterData: PropTypes.arrayOf({
+    id: PropTypes.string,
+    completed: PropTypes.string,
+    title: PropTypes.string,
+  }).isRequired,
 };
 
 export default TodoList;

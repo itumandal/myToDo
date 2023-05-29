@@ -26,7 +26,7 @@ export const TodoItem = ({
           onChange={(e) => toggleTodo(id, e.target.checked)}
         />
         {modifiedTitle(title)}
-        <span className="tool-tip">{title}</span>
+        {title.length > 20 && <span className="tool-tip">{title}</span>}
       </label>
       <button
         className="btn btn-edit"

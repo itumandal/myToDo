@@ -3,6 +3,7 @@ import "./styles.css";
 import { NewTodoForm } from "./NewTodoForm";
 import TodoList from "./TodoList";
 import { ModalEdit } from "./ModalEdit";
+
 export default function App() {
   const [todos, setTodos] = useState(() => {
     const localValue = localStorage.getItem("ITEMS");
@@ -13,6 +14,9 @@ export default function App() {
 
   const [showModal, setShowModal] = useState(false);
   const [currentEdit, setCurrentEdit] = useState({});
+  const [search, setSearch] = useState("");
+  const [filterData, setFilterData] = useState([]);
+  const [showFilterData, setShowFilterData] = useState(false);
 
   useEffect(() => {
     console.log(todos);
@@ -78,17 +82,50 @@ export default function App() {
       });
     });
   };
+
+  const handleSearchTitle = () => {
+    if (!search.trim()) {
+      setShowFilterData(false);
+      return;
+    }
+    setShowFilterData(true);
+    const data = todos.filter((todo) => {
+      return todo.title.includes(search.trim());
+    });
+    setFilterData(data);
+  };
   return (
     <>
       <NewTodoForm addTodo={addTodo} />
-      <h1 className="header">Todo List</h1>
+      <div className="todo-main">
+        <h1 className="header">Todo List</h1>
+        <span>
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <button className="btn" onClick={handleSearchTitle}>
+            Search
+          </button>
+        </span>
+      </div>
+
       <TodoList
         todos={todos}
         toggleTodo={toggleTodo}
         deleteTodo={deleteTodos}
         handleEditTodo={handleEditTodo}
+        showFilterData={showFilterData}
+        filterData={filterData}
       />
-      {showModal && <ModalEdit hidePopup={hidePopup} handleEdit={handleEdit} />}
+      {showModal && (
+        <ModalEdit
+          hidePopup={hidePopup}
+          handleEdit={handleEdit}
+          defaultTitle={currentEdit.title}
+        />
+      )}
     </>
   );
 }
