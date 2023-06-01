@@ -1,5 +1,6 @@
 import { TodoItem } from "./TodoItem";
 import PropTypes from "prop-types";
+import React from "react";
 
 const TodoList = ({
   todos,
@@ -39,11 +40,13 @@ TodoList.propTypes = {
   deleteTodo: PropTypes.func.isRequired,
   handleEditTodo: PropTypes.func.isRequired,
   showFilterData: PropTypes.bool.isRequired,
-  filterData: PropTypes.arrayOf({
-    id: PropTypes.string,
-    completed: PropTypes.string,
-    title: PropTypes.string,
-  }).isRequired,
+  filterData: PropTypes.shape([
+    {
+      id: PropTypes.string,
+      completed: PropTypes.string,
+      title: PropTypes.string,
+    },
+  ]).isRequired,
 };
 
-export default TodoList;
+export default React.memo(TodoList);

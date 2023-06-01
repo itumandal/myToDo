@@ -1,17 +1,17 @@
-import { useState } from "react";
+import React, {  useState } from "react";
 import PropTypes from "prop-types";
 
-export const NewTodoForm = ({ addTodo }) => {
+const NewTodoForm = ({ addTodo }) => {
   const [newItem, setNewItem] = useState("");
 
-  function handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const value = newItem.trim();
     if (!value) return;
     addTodo(newItem);
-    // console.log("todos", todos);
     setNewItem("");
-  }
+  };
+
   return (
     <form onSubmit={handleSubmit} className="new-item-form">
       <div className="form-row">
@@ -31,3 +31,4 @@ export const NewTodoForm = ({ addTodo }) => {
 NewTodoForm.propTypes = {
   addTodo: PropTypes.func.isRequired,
 };
+export default React.memo(NewTodoForm);

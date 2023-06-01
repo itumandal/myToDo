@@ -28,20 +28,22 @@ export const TodoItem = ({
         {modifiedTitle(title)}
         {title.length > 20 && <span className="tool-tip">{title}</span>}
       </label>
-      <button
-        className="btn btn-edit"
-        disabled={completed}
-        onClick={() => handleEditTodo(id)}
-      >
-        Edit
-      </button>
-      <button
-        className="btn btn-danger"
-        disabled={!completed}
-        onClick={() => deleteTodo({ id, completed })}
-      >
-        Delete
-      </button>
+      <div className="btns">
+        <button
+          className="btn btn-edit"
+          disabled={completed}
+          onClick={() => handleEditTodo(id)}
+        >
+          Edit
+        </button>
+        <button
+          className="btn btn-danger"
+          disabled={!completed}
+          onClick={() => deleteTodo({ id, completed, title })}
+        >
+          Delete
+        </button>
+      </div>
     </li>
   );
 };

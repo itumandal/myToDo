@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import "./styles.css";
-import { NewTodoForm } from "./NewTodoForm";
+import NewTodoForm from "./NewTodoForm";
 import TodoList from "./TodoList";
 import { ModalEdit } from "./ModalEdit";
+import Notification from "./Notification";
 
 export default function App() {
   const [todos, setTodos] = useState(() => {
@@ -16,21 +17,25 @@ export default function App() {
   const [currentEdit, setCurrentEdit] = useState({});
   const [search, setSearch] = useState("");
   const [filterData, setFilterData] = useState([]);
+  const [showNotification, setshowNotification] = useState(false);
+  const [message, setMessage] = useState("Notification");
+  const [color, setColor] = useState("transparent");
   const [showFilterData, setShowFilterData] = useState(false);
 
   useEffect(() => {
-    console.log(todos);
     localStorage.setItem("ITEMS", JSON.stringify(todos));
   }, [todos]);
 
-  function addTodo(title) {
+  const addTodo = useCallback((title) => {
     setTodos((currentTodos) => {
       return [
         ...currentTodos,
         { id: crypto.randomUUID(), title, completed: false },
       ];
     });
-  }
+    handleNotification(`${title} added!`, "green");
+  }, []);
+
   const toggleTodo = (id, completed) => {
     setTodos((currentTodos) => {
       return currentTodos.map((todo) => {
@@ -41,20 +46,21 @@ export default function App() {
       });
     });
   };
-  const deleteTodos = ({ id, completed }) => {
+  const deleteTodos = ({ id, completed, title }) => {
     //! write a logic if it is checked then only it will get deleted
-    console.log(completed);
     if (!completed) return; // if  true then return
     setTodos((currentTodos) => {
       return currentTodos.filter(
         (todo) => todo.id !== id // return todo whose id is not matching with current id
       );
     });
+    handleNotification(`${title} deleted!`, "red");
   };
 
   const showPopup = () => {
     setShowModal(true);
   };
+
   const hidePopup = () => {
     setShowModal(false);
   };
@@ -81,6 +87,7 @@ export default function App() {
         }
       });
     });
+    handleNotification(`${title} edited!`, "yellow");
   };
 
   const handleSearchTitle = () => {
@@ -90,10 +97,20 @@ export default function App() {
     }
     setShowFilterData(true);
     const data = todos.filter((todo) => {
-      return todo.title.includes(search.trim());
+      return todo.title.toUpperCase().includes(search.toUpperCase().trim());
     });
     setFilterData(data);
   };
+
+  function handleNotification(message, color) {
+    setMessage(message);
+    setColor(color);
+    setshowNotification(true);
+    setTimeout(() => {
+      setshowNotification(false);
+    }, 4000);
+  }
+
   return (
     <>
       <NewTodoForm addTodo={addTodo} />
@@ -124,6 +141,13 @@ export default function App() {
           hidePopup={hidePopup}
           handleEdit={handleEdit}
           defaultTitle={currentEdit.title}
+        />
+      )}
+      {showNotification && (
+        <Notification
+          message={message}
+          color={color}
+          showNotification={() => setshowNotification(false)}
         />
       )}
     </>

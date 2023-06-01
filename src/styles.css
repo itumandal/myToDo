@@ -9,6 +9,7 @@ body {
   max-width: 400px;
   padding: 1rem;
   margin: 0 auto;
+  overflow-x: hidden;
 }
 
 .new-item-form {
@@ -117,6 +118,7 @@ body {
   display: flex;
   gap: 0.5rem;
   align-items: center;
+  justify-content: space-between;
 }
 
 .list li label {
@@ -127,6 +129,10 @@ body {
   position: relative;
 }
 
+.list li .btns {
+  display: flex;
+  gap: 0.4rem;
+}
 .list li:has(input:focus-visible) label {
   outline: 1px solid hsl(200, 100%, 50%);
 }
@@ -209,4 +215,43 @@ body {
   position: absolute;
   top: 100%;
   z-index: 1;
+}
+
+.notification-main {
+  position: absolute;
+  top: 5%;
+  right: -30%;
+  animation: noti 1s ease-in-out forwards;
+  padding: 0.4rem;
+}
+.notification-main.green {
+  background-color: green;
+}
+.notification-main.red {
+  background-color: red;
+}
+.notification-main.yellow {
+  background-color: yellow;
+  color: black;
+}
+
+.title {
+  font-size: small;
+}
+
+.cross {
+  position: relative;
+  right: -5%;
+  top: -10px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+@keyframes noti {
+  0% {
+    right: -30%;
+  }
+  100% {
+    right: 2%;
+  }
 }

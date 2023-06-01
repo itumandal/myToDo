@@ -12,4 +12,5 @@ Feature includes -
 
 * UseState
 * UseEffect
+* UseCallback
 * localSession
